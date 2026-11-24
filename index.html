@@ -24,13 +24,13 @@
 @media(max-width:900px){.glossary-grid{grid-template-columns:repeat(2,1fr)}.learn-ribbon{grid-template-columns:1fr}.simple-interpret{display:block}.simple-interpret strong{display:block;margin-bottom:5px}}@media(max-width:650px){.glossary-grid{grid-template-columns:1fr}.tour-card{padding:20px}.tour-card h2{font-size:24px}.header-guide{font-size:10px;padding:8px}.hero-buttons{align-items:stretch}.tour-start{flex:1}}
 
 /* Reliable traffic viewport: explicit fallback instead of silent blank WebGL */
-.scene canvas.safe-traffic{display:block;width:100%;height:370px;background:#102233;cursor:default;touch-action:auto}
+.scene canvas.safe-traffic{display:block;width:100%;height:390px;background:#102233;cursor:default;touch-action:auto}
 .scene canvas[id^="canvas-"]{display:none}
 .display-mode{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:4px 0 16px;padding:12px 15px;border:1px solid #294054;border-radius:13px;background:#101f30}
 .display-mode>span{font-size:10px;letter-spacing:1.3px;color:#94aabe;font-weight:750;margin-right:6px}
 .display-mode button{padding:9px 12px;background:#182b40;border:1px solid #385069;border-radius:8px;color:#b8cbd8;font-weight:600;font-size:12px}
 .display-mode button.active{background:#1b4b52;border-color:#53bea9;color:#9fffe4}
-.display-mode small{color:#a5b9c7;margin-left:auto;font-size:11px}
+.display-mode small{color:#a5b9c7;margin-left:auto;font-size:11px}.traffic-legend{display:flex;align-items:center;gap:6px;font-size:11px;color:#acc2cf;white-space:nowrap}.traffic-legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
 @media(max-width:700px){.display-mode small{width:100%;margin-left:0}.scene canvas.safe-traffic{height:280px}}
 </style></head><body>
 <div id="app">
@@ -75,7 +75,7 @@
 </section>
 <section class="view" id="view-studio"><div class="explain-banner"><b>Burada ne göreceksin?</b><span>İki algoritma, aynı sentetik yol ve aynı deney koşulları altında kaydedilmiş araçları gösteriyor. Oynat’a bas, zamanı değiştir ve hız farklarına bak. Bu canlı trafik değildir.</span><button data-goto="overview">Proje anlatımına dön →</button></div><div class="page-heading"><div><p class="eyebrow">REPLAY ENVIRONMENT / TWO POLICIES</p><h1>Simülasyon <em>Stüdyosu</em></h1><p>Aynı deneyde iki kontrol yönteminin kaydedilmiş araçlarını yan yana izle. Araçların rengi hareket hızını temsil eder.</p></div><div class="scenario-tag">DRY · 2,600 VEH/H · SEED 314 <span>● SOURCE-VERIFIED</span></div></div>
 <div class="learn-ribbon" role="note"><div><span class="learn-num">1</span><strong>Oynat</strong><small>Araçları 90 dakikalık kayıtta izle.</small></div><div><span class="learn-num">2</span><strong>Karşılaştır</strong><small>Turkuaz Rule-Based, mor MPC.</small></div><div><span class="learn-num">3</span><strong>Yorumla</strong><small>Hız ve araç sayısını birlikte incele.</small></div></div><div class="controls"><div class="control-cluster"><span>İNCELEME ALANI</span><div class="seg" id="zone-select"><button class="active" data-zone="approach">Yaklaşım · 2–5 km</button><button data-zone="all">Tüm yol · 0–6 km</button><button data-zone="bottle">Darboğaz · 3–4,5 km</button></div></div><div class="control-cluster"><span>KAMERA</span><div class="seg" id="camera-select"><button class="active" data-camera="perspective">Perspektif</button><button data-camera="top">Kuşbakışı</button></div></div><button class="iconbtn" id="reset-camera" title="Kamerayı sıfırla">⟲ Sıfırla</button></div>
-<div class="display-mode" role="group" aria-label="Trafik görünümü seçimi"><span>TRAFİK GÖRÜNÜMÜ</span><button type="button" data-mode="safe" class="active">Güvenilir trafik görünümü</button><button type="button" data-mode="webgl">3B WebGL (deneysel)</button><small id="scene-status">Gerçek SUMO kayıtları · 10 saniyelik örnekler</small></div>
+<div class="display-mode" role="status" aria-label="Trafik görünümü"><span>SUMO TRAFİK OYNATICISI</span><span class="traffic-legend"><i style="background:#f17b83"></i> Sıkışık &lt;20 km/sa</span><span class="traffic-legend"><i style="background:#eec07e"></i> Yavaş 20–50</span><span class="traffic-legend"><i style="background:#73e1b7"></i> Akıcı ≥50</span><small id="scene-status">Gerçek SUMO konumları · 10 saniyelik örnekler</small></div>
 <div class="scenes"><article class="scene"><div class="scene-head"><div><span class="policy-mark rule"></span><strong>Rule-Based</strong><small>KONTROLCÜ A</small></div><div class="scene-speed" id="speed-a">— <span>km/h</span></div></div><canvas id="canvas-rule" aria-label="Rule-Based WebGL simulation"></canvas><canvas id="safe-canvas-rule" class="safe-traffic" aria-label="SUMO araç kayıtlarına dayalı trafik görünümü"></canvas><div class="scene-bottom"><div><small>GÖRÜNEN ARAÇ</small><strong id="count-a">—</strong></div><div><small>20 KM/SA ALTI</small><strong id="slow-a">—</strong></div><div><small>HIZ SINIRI</small><strong id="limit-a">—</strong></div></div></article>
 <article class="scene"><div class="scene-head"><div><span class="policy-mark mpc"></span><strong>Original MPC</strong><small>KONTROLCÜ B</small></div><div class="scene-speed" id="speed-b">— <span>km/h</span></div></div><canvas id="canvas-mpc" aria-label="MPC WebGL simulation"></canvas><canvas id="safe-canvas-mpc" class="safe-traffic" aria-label="SUMO araç kayıtlarına dayalı trafik görünümü"></canvas><div class="scene-bottom"><div><small>GÖRÜNEN ARAÇ</small><strong id="count-b">—</strong></div><div><small>20 KM/SA ALTI</small><strong id="slow-b">—</strong></div><div><small>HIZ SINIRI</small><strong id="limit-b">—</strong></div></div></article></div>
 <div class="player"><div class="player-top"><div class="play-controls"><button id="play" class="playbtn" aria-label="Play pause">▶</button><button id="prev" title="Previous 10s">−10s</button><button id="next" title="Next 10s">+10s</button></div><strong class="clock" id="clock">00:00</strong><div class="live-read" >KARE <b id="frame-number">0 / 540</b></div><div class="player-right">OYNATMA HIZI <select id="speed-select"><option value="1">1×</option><option value="3" selected>3×</option><option value="6">6×</option><option value="12">12×</option></select></div></div><input id="seek" type="range" min="0" max="540" value="0" step="1" aria-label="Simulation time"><div class="seek-captions"><span>00:00</span><span>22:30</span><span>45:00</span><span>67:30</span><span>90:00</span></div></div>
@@ -192,72 +192,85 @@ class Scene3D{
  drawBuffer(array){if(!array.length)return;const gl=this.gl;gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer);gl.bufferData(gl.ARRAY_BUFFER,array,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(this.position);gl.enableVertexAttribArray(this.color);gl.vertexAttribPointer(this.position,3,gl.FLOAT,false,24,0);gl.vertexAttribPointer(this.color,3,gl.FLOAT,false,24,12);gl.drawArrays(gl.TRIANGLES,0,array.length/6)}
  drawFallback(W,H){const ctx=this.ctx;ctx.fillStyle='#0d2130';ctx.fillRect(0,0,W,H);const [lo,hi]=zones[state.zone];ctx.fillStyle='#283f4b';ctx.fillRect(22,H*.31,W-44,H*.37);for(let lane=1;lane<3;lane++){ctx.setLineDash([10,10]);ctx.strokeStyle='#7e9cac';ctx.beginPath();ctx.moveTo(22,H*(.31+lane*.123));ctx.lineTo(W-22,H*(.31+lane*.123));ctx.stroke();ctx.setLineDash([])}for(const c of region(this.policy)){const x=22+(c[0]-lo)/(hi-lo)*(W-44),y=H*(.37+Math.max(0,Math.min(2,c[1]))*.11);ctx.fillStyle=c[2]<20?'#f17b83':c[2]<50?'#eec07e':'#75e3bd';ctx.fillRect(x-3,y-3,7,7)}ctx.fillStyle='#bbd1df';ctx.font='12px sans-serif';ctx.fillText('2D fallback (WebGL unavailable)',18,H-19)}
 }
-let trafficDisplayMode='safe';
+// v36: Reliable readable 2D roadway; the experimental blank WebGL toggle is intentionally removed.
 function safeTrafficDraw(policy){
- const c=$('safe-canvas-'+policy),r=c.getBoundingClientRect();if(r.width<40||r.height<40||!state.data)return;
+ const c=$('safe-canvas-'+policy),r=c.getBoundingClientRect();
+ if(r.width<40||r.height<40||!state.data)return;
  const d=Math.min(window.devicePixelRatio||1,2),W=r.width,H=r.height;
  c.width=Math.round(W*d);c.height=Math.round(H*d);
- const ctx=c.getContext('2d');ctx.setTransform(d,0,0,d,0,0);
- ctx.fillStyle='#0b1a29';ctx.fillRect(0,0,W,H);
+ const ctx=c.getContext('2d');if(!ctx)return;ctx.setTransform(d,0,0,d,0,0);
  const [lo,hi]=zones[state.zone];
- const start={x:W*.075,y:H*.84},end={x:W*.92,y:H*.24};
- const t0=(x)=>Math.max(0,Math.min(1,(x-lo)/(hi-lo)));
- const at=(x,lat=0)=>{const t=t0(x),scale=1.13-.66*t;
-   return {x:start.x+(end.x-start.x)*t-0.35*lat*scale,y:start.y+(end.y-start.y)*t+lat*scale};};
- function polygon(points,color){ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);for(let i=1;i<points.length;i++)ctx.lineTo(points[i].x,points[i].y);ctx.closePath();ctx.fillStyle=color;ctx.fill()}
- // Corridor segments preserve the modeled 3-to-1-to-3 lane narrowing.
- const segments=90;
- for(let i=segments-1;i>=0;i--){const x1=lo+(hi-lo)*i/segments,x2=lo+(hi-lo)*(i+1)/segments;
-   const w1=nlanes(x1)*8.0,w2=nlanes(x2)*8.0;
-   polygon([at(x1,-w1/2),at(x2,-w2/2),at(x2,w2/2),at(x1,w1/2)],'#24394b');
-   const mark=x1>=2800&&x1<=4200?'#c89452':'#76bac0';
-   for(let side of [-1,1]){const a=at(x1,side*w1/2),b=at(x2,side*w2/2);
-     ctx.strokeStyle=mark;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+ ctx.fillStyle='#0a1928';ctx.fillRect(0,0,W,H);
+ // A wide corridor replaces the old thin diagonal. Distances remain mapped linearly.
+ const L=36,R=W-27,cy=H*.53;
+ const slope=state.camera==='perspective' ? -.10*H : 0;
+ const at=(km,lateral=0)=>{const t=(km-lo)/(hi-lo);return {x:L+(R-L)*t,y:cy+slope*(t-.5)+lateral};};
+ const nSegments=120,roadLanePx=23;
+ function fillPoly(pts,color){ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);ctx.closePath();ctx.fillStyle=color;ctx.fill();}
+ // Subtle backdrop and road shadow.
+ ctx.fillStyle='#112d32';ctx.fillRect(0,H*.32,W,H*.41);
+ for(let i=0;i<nSegments;i++){
+  const a=lo+(hi-lo)*i/nSegments,b=lo+(hi-lo)*(i+1)/nSegments;
+  const wa=nlanes(a)*roadLanePx,wb=nlanes(b)*roadLanePx;
+  fillPoly([at(a,-wa/2),at(b,-wb/2),at(b,wb/2),at(a,wa/2)],'#243b4b');
+  const edgeColor=a>=2800&&a<4200?'#e0ab69':'#86adba';
+  for(const side of [-1,1]){const p=at(a,side*wa/2),q=at(b,side*wb/2);
+   ctx.beginPath();ctx.strokeStyle=edgeColor;ctx.lineWidth=2;ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
  }
- // Lane guide marks are schematic; each vehicle's recorded lane is retained.
- for(let x=lo+25;x<hi;x+=100){const lanes=Math.max(1,Math.round(nlanes(x)));
-   for(let lane=1;lane<lanes;lane++){const lat=(lane-lanes/2)*8;const a=at(x,lat),b=at(Math.min(x+48,hi),lat);
-     ctx.strokeStyle='#b9cad288';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
+ // Lane separator segments reflect the modeled 3 → 1 → 3 corridor.
+ for(let x=lo+25;x<hi;x+=65){const lanes=Math.round(nlanes(x));
+  for(let k=1;k<lanes;k++){
+   const lat=(k-lanes/2)*roadLanePx,p=at(x,lat),q=at(Math.min(x+27,hi),lat);
+   ctx.beginPath();ctx.strokeStyle='#b3cad3a2';ctx.lineWidth=1.4;ctx.setLineDash([5,5]);ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.setLineDash([]);
+  }
+ }
+ // Draw every recorded observation. Dense traffic may overlap, as on the real modeled road.
  const cars=region(policy).slice().sort((a,b)=>b[0]-a[0]);
- for(const car of cars){const x=car[0],lane=car[1],speed=car[2],lanes=Math.max(1,Math.round(nlanes(x)));
-   const lat=(Math.max(0,Math.min(lanes-1,lane))+.5-lanes/2)*8;const p=at(x,lat),t=t0(x);
-   const size=3.9-2.1*t;const col=speed<20?'#ed8087':speed<50?'#f1bd72':'#73e7c4';
-   ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.atan2(end.y-start.y,end.x-start.x));
-   ctx.fillStyle='#00000050';ctx.fillRect(-size*.85,1,size*2.3,size*1.25);
-   ctx.fillStyle=col;ctx.fillRect(-size*.85,-size*.65,size*2.3,size*1.2);
-   ctx.fillStyle='#152a38';ctx.fillRect(-size*.1,-size*.45,size*.62,size*.72);
-   ctx.restore();
+ const angle=Math.atan2(slope,R-L);
+ for(const v of cars){const x=v[0],lane=v[1],speed=v[2],lanes=Math.max(1,Math.round(nlanes(x)));
+  const lateral=((Math.max(0,Math.min(lanes-1,lane))+.5)-lanes/2)*roadLanePx;
+  const p=at(x,lateral);const color=speed<20?'#f17b83':speed<50?'#eec07e':'#73e1b7';
+  ctx.save();ctx.translate(p.x,p.y);ctx.rotate(angle);
+  ctx.fillStyle='#06131aaa';ctx.fillRect(-2.4,-4.1,7.4,8.2);
+  ctx.fillStyle=color;ctx.fillRect(-2,-3.4,6.3,6.8);
+  ctx.fillStyle='#13283a';ctx.fillRect(.6,-2.0,2.2,4.0);
+  ctx.restore();
  }
- ctx.fillStyle='#c8dce8';ctx.font='600 12px system-ui';ctx.fillText('SUMO TRAFİK KAYDI',18,27);
- ctx.font='11px system-ui';ctx.fillStyle='#9ab2c6';ctx.fillText((lo/1000).toFixed(1)+'–'+(hi/1000).toFixed(1)+' km  •  '+cars.length+' araç  •  '+time(state.idx),18,45);
- ctx.fillStyle='#93aabb';ctx.fillText('Üstten perspektifli 2B kayıt oynatımı · konumlar SUMO verisidir',18,H-16);
+ // One bar per 100-meter subsegment reports slow-vehicle share for the current instant.
+ const bins=30,counts=Array(bins).fill(0),slow=Array(bins).fill(0);
+ for(const v of cars){const i=Math.max(0,Math.min(bins-1,Math.floor((v[0]-lo)/(hi-lo)*bins)));counts[i]++;if(v[2]<20)slow[i]++}
+ const barY=H-86,barH=21,bw=(R-L)/bins;
+ ctx.fillStyle='#132739';ctx.fillRect(L,barY,R-L,barH);
+ for(let i=0;i<bins;i++){
+  const pct=counts[i]?slow[i]/counts[i]:0;
+  const col=!counts[i]?'#294154':pct>.65?'#ef7b82':pct>.3?'#eebc78':'#73dfbf';
+  ctx.globalAlpha=counts[i]?.93:.40;ctx.fillStyle=col;ctx.fillRect(L+i*bw+1,barY+1,Math.max(1,bw-2),barH-2);
+ }
+ ctx.globalAlpha=1;
+ // Bottleneck cues, especially when inspecting the approach segment.
+ for(const x of [2800,3200,3800,4200]){
+  if(x<=lo||x>=hi)continue;const p=at(x);ctx.strokeStyle='#d9af6e77';ctx.lineWidth=1;ctx.setLineDash([3,5]);
+  ctx.beginPath();ctx.moveTo(p.x,H*.30);ctx.lineTo(p.x,H*.72);ctx.stroke();ctx.setLineDash([]);
+ }
+ ctx.fillStyle='#f2f8fc';ctx.font='700 13px system-ui';ctx.fillText('TRAFİK HAREKETLERİ  •  '+(policy==='rule'?'RULE-BASED':'MPC'),L,28);
+ ctx.fillStyle='#9db8ca';ctx.font='11px system-ui';ctx.fillText('Kayıt zamanı '+time(state.idx)+'  ·  '+cars.length+' araç  ·  '+(lo/1000).toFixed(1)+'–'+(hi/1000).toFixed(1)+' km',L,47);
+ ctx.fillStyle='#91a9bd';ctx.font='11px system-ui';ctx.fillText('YOL KESİTİNDE DÜŞÜK HIZLI ARAÇ ORANI',L,barY-9);
+ for(let i=0;i<=4;i++){
+  const x=lo+(hi-lo)*i/4,p=at(x);ctx.strokeStyle='#355068';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(p.x,barY+barH+2);ctx.lineTo(p.x,barY+barH+8);ctx.stroke();
+  ctx.fillStyle='#a9bdcd';ctx.textAlign='center';ctx.font='10px system-ui';ctx.fillText((x/1000).toFixed(1)+' km',p.x,barY+barH+21);
+ }
+ ctx.textAlign='left';ctx.fillStyle='#6e90a8';ctx.font='10px system-ui';
+ ctx.fillText('Araç konumları SUMO kaydından; araç şekilleri şematiktir.',L,H-10);
 }
 function updateScenes(){
  if(state.view!=='studio')return;
  for(const policy of ['rule','mpc']){
-   const glCanvas=$('canvas-'+policy),safeCanvas=$('safe-canvas-'+policy);
-   if(trafficDisplayMode==='safe'||!renderer[policy]){
-      glCanvas.style.display='none';safeCanvas.style.display='block';safeTrafficDraw(policy);continue;
-   }
-   glCanvas.style.display='block';safeCanvas.style.display='none';
-   try{
-     renderer[policy].draw();
-     // If WebGL created a context but drew no visible geometry, switch safely.
-     const gl=renderer[policy].gl;
-     if(!gl||gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw Error('WebGL çizimi başarısız');
-     const w=glCanvas.width,h=glCanvas.height,px=new Uint8Array(4),samples=[[.5,.5],[.35,.56],[.65,.44],[.5,.65],[.25,.68],[.75,.32]];
-     let distinct=0;for(const [sx,sy] of samples){gl.readPixels(Math.floor(w*sx),Math.floor(h*sy),1,1,gl.RGBA,gl.UNSIGNED_BYTE,px);
-       if(Math.abs(px[0]-12)+Math.abs(px[1]-24)+Math.abs(px[2]-38)>30)distinct++;}
-     if(!distinct)throw Error('3B sahne görünür çizilmedi');
-   }catch(e){console.warn('3B yerine SUMO tabanlı 2B:',e);glCanvas.style.display='none';safeCanvas.style.display='block';safeTrafficDraw(policy);$('scene-status').textContent='3B görüntü yok; gerçek SUMO kayıtları 2B gösteriliyor';}
+  $('canvas-'+policy).style.display='none';
+  $('safe-canvas-'+policy).style.display='block';
+  safeTrafficDraw(policy);
  }
 }
-q('.display-mode button').forEach(btn=>btn.addEventListener('click',()=>{
- trafficDisplayMode=btn.dataset.mode;
- q('.display-mode button').forEach(x=>x.classList.toggle('active',x===btn));
- $('scene-status').textContent=trafficDisplayMode==='safe'?'Gerçek SUMO kayıtları · kararlı 2B görünüm':'WebGL deneniyor; çizilemezse otomatik 2B görünüm';
- updateScenes();
-}));
 function update(){if(!state.data)return;const a=stats(region('rule')),b=stats(region('mpc'));
  $('speed-a').innerHTML=(a.mean===null?'—':N(a.mean))+' <span>km/h</span>';$('speed-b').innerHTML=(b.mean===null?'—':N(b.mean))+' <span>km/h</span>';
  for(const [s,st,p] of [['a',a,'rule'],['b',b,'mpc']]){$('count-'+s).textContent=N(st.n);$('slow-'+s).textContent=N(st.slowPct)+'%';$('limit-'+s).textContent=limit(p,state.idx*10)+' km/h'}
@@ -302,7 +315,7 @@ function renderLab(){if(!paired.length)return;const {w,d,a,b,rows}=labData(),mea
 $('lab-export').addEventListener('click',()=>{if(!paired.length)return;const o=labData();const csv=['weather,demand,seed,policy_A,policy_B,J_A,J_B,difference_A_minus_B',...o.rows.map(r=>[o.w,o.d,r.seed,o.a,o.b,r.a.objective_vehicle_hour_equiv,r.b.objective_vehicle_hour_equiv,r.diff].join(','))].join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='DynamicSpeed_paired_'+o.w+'_'+o.d+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 $('lab-to-studio').addEventListener('click',()=>nav('studio'));
 
-async function init(){try{paired=JSON.parse($('paired-payload').textContent);if(paired.length!==72)throw Error('Comparison data incomplete');renderLab();state.kpis=JSON.parse($('kpi-payload').textContent);const text=$('trace-payload').textContent.trim();const bytes=Uint8Array.from(atob(text),x=>x.charCodeAt(0));if(!('DecompressionStream' in window))throw Error('Browser does not support gzip decompression. Use modern Chrome, Edge or Firefox.');const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));state.data=JSON.parse(await new Response(stream).text());for(const p of ['rule','mpc'])if(state.data[p].frames.length!==541)throw Error('Unexpected trace length for '+p);overviewBars();evidence();for(const p of ['rule','mpc'])try{renderer[p]=new Scene3D('canvas-'+p,p)}catch(e){console.error(e);toast('3D rendering not supported in this browser: '+e.message)}calculatePeaks();update();toast('SUMO archive loaded · 541 time frames per strategy');}catch(err){console.error(err);toast('Could not open embedded SUMO data: '+err.message)}}
+async function init(){try{paired=JSON.parse($('paired-payload').textContent);if(paired.length!==72)throw Error('Comparison data incomplete');renderLab();state.kpis=JSON.parse($('kpi-payload').textContent);const text=$('trace-payload').textContent.trim();const bytes=Uint8Array.from(atob(text),x=>x.charCodeAt(0));if(!('DecompressionStream' in window))throw Error('Browser does not support gzip decompression. Use modern Chrome, Edge or Firefox.');const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));state.data=JSON.parse(await new Response(stream).text());for(const p of ['rule','mpc'])if(state.data[p].frames.length!==541)throw Error('Unexpected trace length for '+p);overviewBars();evidence();/* v36: WebGL intentionally disabled; deterministic SUMO Canvas renderer */calculatePeaks();update();toast('SUMO archive loaded · 541 time frames per strategy');}catch(err){console.error(err);toast('Could not open embedded SUMO data: '+err.message)}}
 window.addEventListener('resize',()=>{updateScenes();drawAnalytics()});init();
 
 // New visitor tour: optional, keyboard-accessible, using existing navigation and replay state.
