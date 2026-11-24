@@ -182,6 +182,19 @@
 .ds-hub{padding:clamp(22px,3.5vw,42px);border:1px solid #315268;background:linear-gradient(120deg,#102d36,#112035 64%,#171d35);border-radius:24px;margin:28px 0 32px;box-shadow:0 22px 55px #0002}
 .ds-hub .eyebrow{color:#76eacb}.ds-hub h2{font-size:clamp(24px,2.8vw,37px);line-height:1.19;max-width:750px;margin:12px 0}.ds-hub p{color:#b5c8d8;line-height:1.7;max-width:840px}.ds-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:23px}.ds-route{background:#0a1727;border:1px solid #365268;border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}.ds-route strong{font-size:21px;letter-spacing:-.6px}.ds-route p{font-size:13px;margin:0;flex:1}.ds-route .ds-route-meta{font-size:11px;color:#94abbe;letter-spacing:.04em}.ds-route .ds-route-icon{font-size:29px;line-height:1}.ds-route .ds-route-link{padding:13px 14px;text-align:center;background:#73e9c7;color:#06282d!important;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;display:block;transition:transform .15s ease,filter .15s ease}.ds-route .ds-route-link:hover{transform:translateY(-2px);filter:brightness(1.05)}.ds-route .ds-route-link.alt{background:#253b52;color:#e8f6ff!important;border:1px solid #52718a}.ds-note{font-size:12px!important;color:#94adbd!important;margin-top:15px!important}.ds-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:22px 0}.ds-step{border:1px solid #29465c;border-radius:15px;background:#0d1c2e;padding:19px}.ds-step b{display:block;font-size:14px;margin-bottom:7px}.ds-step span{display:block;font-size:12px;color:#a8bdce;line-height:1.6}.ds-badge{display:inline-flex;padding:7px 10px;border:1px solid #365a61;border-radius:99px;color:#a1e1d5;background:#14303a;font-size:11px;font-weight:700}.ds-checklist{border:1px solid #35556c;border-radius:16px;padding:20px 22px;background:#0b1c2b;margin:22px 0}.ds-checklist summary{cursor:pointer;font-weight:700}.ds-checklist ol{color:#adc5d4;line-height:1.95;font-size:13px;margin-bottom:0;padding-left:21px}.ds-hub a:focus-visible,.ds-route-link:focus-visible{outline:3px solid #9ef9da;outline-offset:3px}.ds-topstrip{padding:15px 20px;border:1px solid #295468;border-radius:13px;background:#123040;margin:18px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.ds-topstrip strong{color:#ecfaff}.ds-topstrip span{font-size:12px;color:#b2c8d7}.ds-topstrip button{background:#76eacb;color:#06242d;padding:10px 15px;border:0;border-radius:10px;font-weight:800}.ds-view-title{max-width:860px}.ds-view-title h1{font-size:clamp(31px,3.6vw,51px)}
 @media(max-width:860px){.ds-hub-grid{grid-template-columns:1fr}.ds-steps{grid-template-columns:1fr}.ds-hub{padding:22px}.ds-route{padding:19px}}@media(max-width:600px){.ds-hub h2{font-size:27px}.ds-route .ds-route-link{width:100%}}
+
+/* v45 - guided long experiment launch, no GitHub credentials in browser */
+.v45-lab{margin:28px 0;border:1px solid #34736e;background:linear-gradient(125deg,#102d33,#102037);border-radius:20px;padding:clamp(20px,3vw,34px)}
+.v45-lab h2{font-size:clamp(24px,2.6vw,32px);margin:8px 0 8px}.v45-sub{color:#afc4d5;line-height:1.6;max-width:790px}
+.v45-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}
+.v45-field{display:flex;flex-direction:column;gap:8px;color:#bbd4df;font-size:12px;font-weight:700}
+.v45-field select,.v45-field input{width:100%;min-height:47px;color:#f0f8fe;background:#1a3045;border:1px solid #3a5a71;border-radius:10px;padding:10px 12px}
+.v45-summary{padding:17px 20px;border-radius:12px;background:#071b2a;border:1px solid #305b61;color:#c9e9e6;line-height:1.8;font-size:13px;white-space:pre-wrap}
+.v45-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.v45-primary,.v45-secondary{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:11px;padding:12px 16px;min-height:45px;font-weight:800;font-size:13px;border:1px solid #579688}
+.v45-primary{background:#73e6ca;color:#071a24}.v45-secondary{background:#18384a;color:#c8eee7}
+.v45-note{font-size:12px;color:#a7bdcb;line-height:1.7;margin-top:11px}.v45-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0 0}.v45-guide>div{background:#10283a;border:1px solid #294e62;border-radius:11px;padding:12px;font-size:12px;color:#aec6d8;line-height:1.65}.v45-guide b{color:#e5f6ff;display:block;margin-bottom:5px}
+@media(max-width:850px){.v45-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v45-guide{grid-template-columns:1fr}}@media(max-width:500px){.v45-grid{grid-template-columns:1fr}.v45-actions>*{width:100%}}
 </style></head><body>
 <div id="app">
 <aside class="sidebar"><div class="brand"><div class="brand-symbol"><svg width="28" height="28" viewBox="0 0 28 28"><path d="M3 19 L10 9 L15 15 L25 5" fill="none" stroke="#7df5d1" stroke-width="3" stroke-linecap="round"/><path d="M17 5h8v8" fill="none" stroke="#7df5d1" stroke-width="3" stroke-linecap="round"/></svg></div><div><b>DynamicSpeed</b><span>TRAFFIC INTELLIGENCE</span></div></div>
@@ -330,6 +343,27 @@
  <article class="ds-route"><span class="ds-route-icon" aria-hidden="true">⚡</span><span class="ds-badge">KISA DENEY · ANLIK BAŞLATMA</span><strong>Hızlı SUMO deneyi</strong><p>Sunucuda yeni simülasyon üret. Daha önce 600 ve 1.200 araç/saat için 10 dakikalık testler başarıyla tamamlandı; yoğun ve uzun koşuların 512 MB Render Free belleği nedeniyle başarısız olabileceğini unutma.</p><a class="ds-route-link" href="https://dynamicspeed-live.onrender.com/simulator" target="_blank" rel="noopener noreferrer">Canlı simülatöre git ↗</a></article>
  <article class="ds-route"><span class="ds-route-icon" aria-hidden="true">◷</span><span class="ds-badge">UZUN DENEY · DAHA FAZLA HESAPLAMA</span><strong>Yoğun trafik analizi</strong><p>GitHub Actions'ta 30–90 dakikalık deneyini başlat. İşlem tamamlanınca indirilen dosyalar içindeki <code>result.json</code> ile yan yana trafik kaydı, hız kararları ve maliyet tablosunu incele.</p><a class="ds-route-link alt" href="https://github.com/boraozell/DynamicSpeed-live/actions/workflows/long_simulation.yml" target="_blank" rel="noopener noreferrer">GitHub'da uzun deneyi başlat ↗</a><a class="ds-route-link alt" href="long-results.html">Sonuçları görüntüle ↗</a></article>
  </div>
+
+<section class="v45-lab" id="v45-long-lab" aria-labelledby="v45-title">
+  <p class="eyebrow">YENİ · ADIM ADIM UZUN DENEY</p><h2 id="v45-title">Uzun deneyini burada hazırla.</h2>
+  <p class="v45-sub">Koşulları seç, ayar özetini tek tıkla kopyala ve GitHub Actions'taki <strong>Run workflow</strong> formuna aktar. Sonuçları yine bu sitede incele. GitHub hesabında iş akışını çalıştırma iznin olması gerekir.</p>
+  <div class="v45-grid">
+    <label class="v45-field">Trafik talebi<select id="v45-demand"><option value="1200">1.200 araç/saat</option><option value="1800">1.800 araç/saat</option><option value="2600" selected>2.600 araç/saat</option><option value="3400">3.400 araç/saat</option><option value="4200">4.200 araç/saat</option></select></label>
+    <label class="v45-field">Süre<select id="v45-duration"><option value="10">10 dakika</option><option value="30" selected>30 dakika</option><option value="60">60 dakika</option><option value="90">90 dakika</option></select></label>
+    <label class="v45-field">Hava koşulu<select id="v45-weather"><option value="dry">Kuru yol</option><option value="light_rain">Hafif yağmur</option><option value="heavy_rain">Şiddetli yağmur</option></select></label>
+    <label class="v45-field">Deney tohumu<input id="v45-seed" type="number" inputmode="numeric" min="1" max="9999999" value="314"></label>
+    <label class="v45-field">Kontrolcü A<select id="v45-a"><option value="static">Sabit 100</option><option value="rule">Rule-Based</option><option value="mpc">Original MPC</option><option value="weather_rule">Weather-Aware</option></select></label>
+    <label class="v45-field">Kontrolcü B<select id="v45-b"><option value="static">Sabit 100</option><option value="rule" selected>Rule-Based</option><option value="mpc">Original MPC</option><option value="weather_rule">Weather-Aware</option></select></label>
+  </div>
+  <div class="v45-summary" id="v45-summary" role="status" aria-live="polite"></div>
+  <div class="v45-actions">
+   <button class="v45-primary" type="button" id="v45-copy">① Ayarları kopyala</button>
+   <a class="v45-secondary" href="https://github.com/boraozell/DynamicSpeed-live/actions/workflows/long_simulation.yml" target="_blank" rel="noopener noreferrer">② GitHub Actions'ı aç ↗</a>
+   <a class="v45-secondary" href="long-results.html">③ Sonuç görüntüleyicisini aç ↗</a>
+  </div>
+  <div class="v45-guide"><div><b>1. Ayarları seç</b> Buradaki seçenekler mevcut GitHub iş akışındaki alanlarla birebir eşleşir.</div><div><b>2. GitHub'da başlat</b> <strong>Run workflow</strong> aç, değerleri gir, tekrar <strong>Run workflow</strong> seç. Buradaki seçimler GitHub formunu otomatik doldurmaz.</div><div><b>3. Sonucu incele</b> Yeşil tikli çalıştırmanın <strong>Artifacts</strong> ZIP dosyasını indir, ZIP'teki <code>result.json</code> dosyasını sonuç sayfasına yükle.</div></div>
+  <p class="v45-note">Güvenlik: Sayfa GitHub hesabına erişmez, token istemez, iş akışını otomatik başlatmaz. Bu, henüz yalnızca depo üzerinde işlem başlatma izni olan kullanıcılar için desteklenen bir yöntemdir. Deneyler sentetiktir; gerçek trafik verisi değildir.</p>
+</section>
  <details class="ds-checklist"><summary>Uzun deney nasıl çalıştırılır? · 4 adım</summary><ol><li>GitHub Actions bağlantısından <strong>Run workflow</strong> seç.</li><li>Trafik, süre, hava, tohum ve kontrolcüleri belirleyip işlemi başlat.</li><li>İşlem başarılıysa <strong>Artifacts</strong> bölümünden sonuç ZIP'ini indir.</li><li>ZIP'i aç ve içindeki <code>result.json</code> dosyasını <a href="long-results.html" style="color:#79e9cd">Uzun Deney Görüntüleyicisi</a> sayfasına yükle.</li></ol></details>
  <div class="ds-topstrip"><div><strong>Önce projeyi mi anlamak istiyorsun?</strong><br><span>Hazır 90 dakikalık araştırma kayıtlarını, yeni deney çalıştırmadan izleyebilirsin.</span></div><button type="button" data-goto="studio">Kayıtlı simülasyonu izle →</button></div>
  <p class="ds-note">Araştırma prototipi: Kontrol algoritmaları gerçek saha verileriyle kalibre edilmemiştir. Uzun deney özelliği henüz web sitesinden doğrudan çalıştırma sunmaz ve GitHub erişimi gerektirir.</p>
@@ -658,4 +692,33 @@ if(location.hash){const p=location.hash.slice(1);if(['overview','studio','lab','
 setTimeout(interpret,900);
 })();
 
-</script></body></html>
+</script>
+<script>
+/* v45 - standalone behavior, no API credentials; deliberate manual GitHub dispatch */
+(function(){
+ 'use strict';
+ const ids=['demand','duration','weather','seed','a','b'];
+ const el=k=>document.getElementById('v45-'+k);
+ const textName=v=>({static:'Sabit 100',rule:'Rule-Based',mpc:'Original MPC',weather_rule:'Weather-Aware'}[v]||v);
+ const wName=v=>({dry:'Kuru yol',light_rain:'Hafif yağmur',heavy_rain:'Şiddetli yağmur'}[v]||v);
+ function build(){
+   const p=Object.fromEntries(ids.map(k=>[k,el(k).value]));
+   const seed=Number(p.seed);
+   const valid=Number.isInteger(seed)&&seed>0&&seed<10000000&&p.a!==p.b;
+   const lines=['GitHub Actions: DynamicSpeed - Uzun SUMO deneyi','Trafik talebi (demand): '+p.demand,'Süre (duration): '+p.duration,'Hava (weather): '+p.weather+' / '+wName(p.weather),'Tohum (seed): '+p.seed,'Kontrolcü A (policy_a): '+p.a+' / '+textName(p.a),'Kontrolcü B (policy_b): '+p.b+' / '+textName(p.b)];
+   el('summary').textContent=valid?lines.join('\n'):(p.a===p.b?'İki farklı kontrolcü seçmelisin.':'Geçerli bir deney tohumu gir (1–9.999.999).');
+   el('copy').disabled=!valid;el('copy').style.opacity=valid?'1':'.5';
+   return valid?lines.join('\n'):null;
+ }
+ ids.forEach(id=>el(id).addEventListener('change',build));
+ el('seed').addEventListener('input',build);
+ el('copy').addEventListener('click',async()=>{
+   const txt=build();if(!txt)return;
+   try{await navigator.clipboard.writeText(txt);el('copy').textContent='✓ Kopyalandı';}
+   catch(err){const area=document.createElement('textarea');area.value=txt;area.style.position='fixed';area.style.left='-9999px';document.body.appendChild(area);area.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}area.remove();el('copy').textContent=ok?'✓ Kopyalandı':'Ayarları seçip elle kopyala';}
+   setTimeout(()=>{el('copy').textContent='① Ayarları kopyala'},2500);
+ });
+ build();
+})();
+</script>
+</body></html>
