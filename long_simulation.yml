@@ -1,0 +1,102 @@
+name: DynamicSpeed - Uzun SUMO deneyi
+run-name: "DS-${{ inputs.request_id }} | ${{ inputs.demand }} arac/saat | ${{ inputs.duration }} dk"
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Site entegrasyonu deney kimligi (elle calistirmada bos kalabilir)"
+        required: false
+        type: string
+        default: ""
+      demand:
+        description: "Trafik talebi (arac/saat)"
+        required: true
+        type: choice
+        default: '2600'
+        options: ['1200', '1800', '2600', '3400', '4200']
+      duration:
+        description: "Simulasyon suresi (dakika)"
+        required: true
+        type: choice
+        default: '30'
+        options: ['10', '30', '60', '90']
+      weather:
+        description: "Hava kosulu"
+        required: true
+        type: choice
+        default: dry
+        options: [dry, light_rain, heavy_rain]
+      seed:
+        description: "Rastgele deney tohumu"
+        required: true
+        default: '314'
+        type: string
+      policy_a:
+        description: "Kontrolcu A"
+        required: true
+        type: choice
+        default: static
+        options: [static, rule, mpc, weather_rule]
+      policy_b:
+        description: "Kontrolcu B"
+        required: true
+        type: choice
+        default: rule
+        options: [static, rule, mpc, weather_rule]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: long-sumo-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  simulation:
+    name: SUMO - ${{ inputs.demand }} veh/h - ${{ inputs.duration }} min
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v4
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: SUMO ve TraCI kur
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends sumo sumo-tools
+          python -m pip install --no-cache-dir 'traci>=1.20,<2'
+          sumo --version
+          netconvert --version
+      - name: Uzun deneyleri sirayla calistir
+        env:
+          DS_DEMAND: ${{ inputs.demand }}
+          DS_DURATION: ${{ inputs.duration }}
+          DS_WEATHER: ${{ inputs.weather }}
+          DS_SEED: ${{ inputs.seed }}
+          DS_POLICY_A: ${{ inputs.policy_a }}
+          DS_POLICY_B: ${{ inputs.policy_b }}
+          SUMO_HOME: /usr/share/sumo
+        run: |
+          python run_long_experiment.py \
+            --demand "$DS_DEMAND" \
+            --duration "$DS_DURATION" \
+            --weather "$DS_WEATHER" \
+            --seed "$DS_SEED" \
+            --policy-a "$DS_POLICY_A" \
+            --policy-b "$DS_POLICY_B"
+      - name: Sonuclari indirilebilir dosya olarak sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dynamicspeed-${{ inputs.demand }}-${{ inputs.duration }}min-${{ github.run_number }}
+          path: |
+            actions_results/result.json
+            actions_results/summary.csv
+            actions_results/run_manifest.json
+            actions_results/error.txt
+          if-no-files-found: error
+          retention-days: 14
