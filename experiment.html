@@ -41,18 +41,54 @@ function stopPoll(){if(pollTimer){clearTimeout(pollTimer);pollTimer=null}}
 function updateSummary(){ $('summary').textContent=`${Number($('demand').value).toLocaleString('tr-TR')} araç/saat · ${$('duration').value} dakika · ${wx[$('weather').value]}` }
 ['demand','duration','weather'].forEach(id=>$(id).addEventListener('change',updateSummary));
 async function api(path,body,key='',binary=false){const res=await fetch(WORKER+path,{method:'POST',headers:{'Content-Type':'application/json',...(key?{'X-Job-Key':key}:{})},body:JSON.stringify(body)});if(!res.ok){let msg='Sunucu hatası '+res.status;try{msg=(await res.json()).error||msg}catch{}throw Error(msg)}return binary?res.blob():res.json()}
-async function config(){const r=await fetch(WORKER+'/public/config');if(!r.ok)throw Error('Simülasyon bağlantısı hazır değil');const v=await r.json();if(!v.site_key)throw Error('Güvenlik ayarı eksik');return v.site_key}
-async function init(){try{const sitekey=await config();for(let i=0;i<60&&!window.turnstile;i++)await new Promise(r=>setTimeout(r,150));if(!window.turnstile)throw Error('Güvenlik doğrulaması yüklenemedi');widgetId=window.turnstile.render('#turnstile',{sitekey,callback:t=>{token=t;if(!currentJob)$('start').disabled=false},'expired-callback':()=>{token='';$('start').disabled=true},'error-callback':()=>{token='';$('start').disabled=true}});$('start').textContent='▶ Simülasyonu başlat';$('start').disabled=!token;
- const saved=JSON.parse(sessionStorage.getItem(SESSION)||'null');if(saved?.request_id&&saved?.job_key){currentJob=saved;note('Önceki deneyinin durumu kontrol ediliyor…');$('start').disabled=true;check()}
- }catch(e){$('turnstile-error').classList.remove('hidden');note(e.message,true);$('start').textContent='Bağlantı kurulamadı';$('start').disabled=true}}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+async function config(){
+ let lastError;
+ for(let attempt=0;attempt<4;attempt++){
+  try{
+   const controller=new AbortController();
+   const timeout=setTimeout(()=>controller.abort(),9000);
+   let r;
+   try{r=await fetch(WORKER+'/public/config',{cache:'no-store',signal:controller.signal})}finally{clearTimeout(timeout)}
+   if(!r.ok)throw Error('Sunucu yanıtı '+r.status);
+   const v=await r.json();if(!v.site_key)throw Error('Güvenlik ayarı eksik');
+   return v.site_key;
+  }catch(e){lastError=e;if(attempt<3)await sleep(850*(attempt+1))}
+ }
+ throw Error('Bağlantı geçici olarak kurulamadı: '+(lastError?.message||'Ağ hatası'));
+}
+async function init(){
+ $('start').disabled=true;
+ $('start').textContent='Güvenli bağlantı hazırlanıyor…';
+ $('turnstile-error').classList.add('hidden');
+ try{
+  const sitekey=await config();
+  // The global object can exist before the explicit-render method has finished loading.
+  for(let i=0;i<90&&typeof window.turnstile?.render!=='function';i++)await sleep(150);
+  if(typeof window.turnstile?.render!=='function')throw Error('Güvenlik doğrulaması yüklenemedi');
+  if(widgetId!==null){try{window.turnstile.remove(widgetId)}catch{}widgetId=null}
+  widgetId=window.turnstile.render('#turnstile',{sitekey,
+   callback:t=>{token=t;if(!currentJob)$('start').disabled=false},
+   'expired-callback':()=>{token='';$('start').disabled=true},
+   'error-callback':()=>{token='';$('start').disabled=true;$('turnstile-error').classList.remove('hidden')}
+  });
+  $('start').textContent='▶ Simülasyonu başlat';$('start').disabled=!token;
+  const saved=JSON.parse(sessionStorage.getItem(SESSION)||'null');
+  if(saved?.request_id&&saved?.job_key){currentJob=saved;note('Önceki deneyinin durumu kontrol ediliyor…');$('start').disabled=true;check()}
+ }catch(e){
+  $('turnstile-error').classList.remove('hidden');note(e.message,true);
+  $('start').textContent='↻ Bağlantıyı yeniden dene';$('start').disabled=false;
+  $('start').onclick=()=>{ $('start').onclick=begin;init() };
+ }
+}
 async function begin(){if(currentJob)return; if(!token){note('Önce güvenlik doğrulamasını tamamla.',true);return}ended=false;$('start').disabled=true;$('results').classList.add('hidden');$('intro').classList.add('hidden');note('Deney başlatılıyor…');try{
  const body={demand:Number($('demand').value),duration:Number($('duration').value),weather:$('weather').value,turnstile:token};const out=await api('/public/start',body);currentJob={request_id:out.request_id,job_key:out.job_key};sessionStorage.setItem(SESSION,JSON.stringify(currentJob));token='';$('start').textContent='Deney çalışıyor…';note('Deney sıraya alındı. Durum otomatik güncellenecek.');schedule(3500);
- }catch(e){note(e.message,true);$('start').disabled=!token; if(widgetId!==null&&window.turnstile){turnstile.reset(widgetId);token='';$('start').disabled=true}}}
+ }catch(e){note(e.message,true);$('start').disabled=!token; if(widgetId!==null&&typeof window.turnstile?.reset==='function'){window.turnstile.reset(widgetId);token='';$('start').disabled=true}}}
 function schedule(ms=8000){stopPoll();pollTimer=setTimeout(check,ms)}
 async function check(){if(!currentJob||ended)return;try{const v=await api('/public/status',{request_id:currentJob.request_id},currentJob.job_key);if(v.status==='completed'){if(v.conclusion==='success'&&v.artifact_ready){note('Hesaplama tamamlandı. Trafik kayıtları açılıyor…');return await loadRemote()}if(v.conclusion==='success'){note('Hesaplama tamamlandı. Sonuç dosyası hazırlanıyor…');schedule(9000);return}throw Error('Deney başarısız oldu. Yeni denemeyi daha sonra başlatabilirsin.')}
  const labels={queued:'Deney kuyruğa alındı',in_progress:'SUMO simülasyonu hesaplanıyor',waiting:'Deney sırada',pending:'Deney hazırlanıyor',requested:'Deney hazırlanıyor'};note((labels[v.status]||'Deney çalışıyor')+'… Bu sayfa otomatik güncellenir.');schedule();
  }catch(e){if(String(e.message).includes('başarısız')){finish();note(e.message,true)}else{note('Bağlantı kontrol ediliyor: '+e.message);schedule(12000)}}}
-function finish(){ended=true;stopPoll();sessionStorage.removeItem(SESSION);currentJob=null;$('start').textContent='▶ Yeni simülasyon başlat';$('start').disabled=!token; if(window.turnstile&&widgetId!==null){turnstile.reset(widgetId);token='';$('start').disabled=true}}
+function finish(){ended=true;stopPoll();sessionStorage.removeItem(SESSION);currentJob=null;$('start').textContent='▶ Yeni simülasyon başlat';$('start').disabled=!token; if(typeof window.turnstile?.reset==='function'&&widgetId!==null){window.turnstile.reset(widgetId);token='';$('start').disabled=true}}
 async function loadRemote(){if(!window.JSZip)throw Error('ZIP okuyucu yüklenmedi');const blob=await api('/public/result',{request_id:currentJob.request_id},currentJob.job_key,true);if(blob.size>25_000_000)throw Error('Sonuç dosyası çok büyük');const z=await JSZip.loadAsync(blob);const file=z.file('result.json');if(!file)throw Error('ZIP içinde result.json yok');const text=await file.async('string');if(text.length>20_000_000)throw Error('Sonuç verisi çok büyük');const obj=JSON.parse(text);display(obj,'Yeni hesaplanan SUMO deneyi');finish();$('status').classList.add('hidden')}
 function display(obj,label){if(!obj||!Array.isArray(obj.runs))throw Error('Sonuç biçimi geçersiz');const a=obj.runs.find(x=>x.policy==='static'),b=obj.runs.find(x=>x.policy==='rule');if(!a?.frames?.length||!b?.frames?.length)throw Error('Kontrolcü kayıtları eksik');data=obj;frames=[a.frames,b.frames];stop();index=0;const aa=Number(a.metrics.objective_vehicle_hour_equiv),bb=Number(b.metrics.objective_vehicle_hour_equiv);$('j-static').textContent=fmt(aa);$('j-rule').textContent=fmt(bb);const gain=(aa-bb)/aa*100;$('j-gain').textContent=(gain>=0?'−':'+')+fmt(Math.abs(gain))+'%';$('gain-label').textContent=gain>=0?'Dinamik yöntem daha düşük maliyetli':'Sabit yöntem daha düşük maliyetli';$('completion').textContent=`Tamamlanan araç: sabit ${a.metrics.completed} / dinamik ${b.metrics.completed} · Kontrol değişimi: ${b.metrics.control_change_units}`;$('timeline').max=Math.min(a.frames.length,b.frames.length)-1;$('timeline').value=0;$('summary').textContent=`${Number(obj.config?.demand||$('demand').value).toLocaleString('tr-TR')} araç/saat · ${obj.config?.duration_minutes||$('duration').value} dakika · ${wx[obj.config?.weather]||wx[$('weather').value]}`;$('tag').textContent=label;$('results').classList.remove('hidden');$('intro').classList.add('hidden');draw();drawLimits(a,b)}
 function paint(c,frame){const ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.fillStyle='#061a29';ctx.fillRect(0,0,w,h);const x0=35,x1=w-35,cy=h/2;const sx=x=>x0+(x1-x0)*Math.max(0,Math.min(6000,x))/6000;const bound=lane=>{const yy=cy+(lane-1)*27;return yy};ctx.fillStyle='#264559';const path=new Path2D();path.moveTo(x0,cy-54);path.lineTo(sx(3000),cy-54);path.lineTo(sx(3400),cy-14);path.lineTo(sx(3600),cy-14);path.lineTo(sx(4000),cy-54);path.lineTo(x1,cy-54);path.lineTo(x1,cy+54);path.lineTo(sx(4000),cy+54);path.lineTo(sx(3600),cy+14);path.lineTo(sx(3400),cy+14);path.lineTo(sx(3000),cy+54);path.lineTo(x0,cy+54);path.closePath();ctx.fill(path);ctx.strokeStyle='#789caf';ctx.lineWidth=2;ctx.stroke(path);ctx.setLineDash([9,10]);ctx.strokeStyle='#6d8c9a77';for(const l of [-1,1]){ctx.beginPath();ctx.moveTo(x0,cy+l*18);ctx.lineTo(sx(3000),cy+l*18);ctx.moveTo(sx(4000),cy+l*18);ctx.lineTo(x1,cy+l*18);ctx.stroke()}ctx.setLineDash([]);
